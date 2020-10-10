@@ -5,8 +5,8 @@
 // @description  مواعيد صفوف موادي
 // @author       Mohammad Hammad
 // @match        https://svuis.svuonline.org/SVUIS/course_time_tutor.php
-// @updateURL    https://github.com/MohammadHammad96/SVUIS/blob/main/My%20Courses%20Time.js
-// @downloadURL  https://github.com/*
+// @updateURL    https://github.com/*
+// @downloadURL  https://github.com/MohammadHammad96/SVUIS/blob/main/My%20Courses%20Time.js
 // @grant        none
 // ==/UserScript==
 
