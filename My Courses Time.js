@@ -1,13 +1,12 @@
 // ==UserScript==
 // @name         My Courses Time
 // @namespace    http://tampermonkey.net/
-// @version      10-10-2020
+// @version      11-10-2020
 // @description  مواعيد صفوف موادي
 // @author       Mohammad Hammad
 // @match        https://svuis.svuonline.org/SVUIS/course_time_tutor.php
 // @updateURL    https://github.com/*
 // @downloadURL  https://github.com/MohammadHammad96/SVUIS/blob/main/My%20Courses%20Time.js
-// @grant        none
 // ==/UserScript==
 
 (function () {
@@ -61,7 +60,6 @@
       return temp;
     }
   }
-  var timer = 0;
   $("#TableResult").parent().attr("id", "Course_Section");
   $("#Course_Section").html("");
   var boots =
@@ -72,18 +70,14 @@
   var courses = [],
     new_courses = [];
   var SelectedProgram = 32 /* BAIT */,
-    SelectedCourse = [714, 736, 796, 797] /* BMN101 - ISE301 - ISE302 - INT305 */,
+    SelectedCourse = [
+      714,
+      736,
+      796,
+      797,
+    ] /* BMN101 - ISE301 - ISE302 - INT305 */,
     ENGProgram = 7 /* ENG */,
-    L5 = 236 /* L5 */;
-  var sat = 0,
-    sun = 0,
-    mon = 0,
-    tue = 0,
-    wed = 0,
-    thu = 0,
-    fri = 0;
-  var result = "",
-    all = "";
+    L5 = 236; /* L5 */
   function GetCourseResultSS(Prog, Course, Term) {
     var AjaxData = "";
     AjaxData =
@@ -163,7 +157,6 @@
             time[2] = Am_Pm_Time(time[2]);
             var newest_time = time[0] + " " + new_time1 + " - " + new_time2;
             time = time[0] + " " + time[1] + " - " + time[2];
-            all += time + "*" + cclass + "*" + mail + "*" + name + "$";
             courses.push({
               Time: time,
               Class: cclass,
@@ -273,7 +266,6 @@
             time[2] = Am_Pm_Time(time[2]);
             var newest_time = time[0] + " " + new_time1 + " - " + new_time2;
             time = time[0] + " " + time[1] + " - " + time[2];
-            all += time + "*" + cclass + "*" + mail + "*" + name + "$";
             courses.push({
               Time: time,
               Class: cclass,
@@ -347,17 +339,11 @@
       }
     }
   }
-  var xs =
-    "<div class='container'><div class='row'><p>مواعيد عادية</p></div></div><div class='container'>";
-  var xs2 = "<div class='container'>";
+  var xs = "<div class='container'>";
   for (i = 0; i < courses_days.length; i++) {
     if (courses_days[i].length > 0) {
       xs +=
-        "<div class='row'><div class='col-md-2'><span>" +
-        courses_days[i].day +
-        "</span></div>";
-      xs2 +=
-        "<div class='row'><div class='col-md-2'><span>" +
+        "<div class='row'><div class='col-md-2 retype'><span>" +
         courses_days[i].day +
         "</span></div>";
       for (j = 0; j < courses_days[i].length; j++) {
@@ -387,26 +373,9 @@
           t[4] +
           " " +
           t[5] +
-          "'><span>" +
-          courses_days[i][j].Class +
-           "</span></div>";
+          "' data-time-ram='";
         t = new_courses_days[i][j].Time.split(" ");
-        xs2 +=
-          "<div class='col-md-" +
-          parseInt(10 / courses_days[i].length) +
-          " sps' style='flex:0 0 " +
-          (100 / 12) * parseFloat(10 / courses_days[i].length) +
-          "%;max-width:" +
-          (100 / 12) * parseFloat(10 / courses_days[i].length) +
-          "%;' data-tutor='" +
-          courses_days[i][j].Name +
-          "' data-mail='" +
-          courses_days[i][j].Mail +
-          "' data-qty='" +
-          courses_days[i][j].Qty +
-          "' data-class='" +
-          courses_days[i][j].Class +
-          "' data-time='" +
+        xs +=
           t[1] +
           " " +
           t[2] +
@@ -417,20 +386,18 @@
           " " +
           t[5] +
           "'><span>" +
-          courses_days[i][j].Class +"</span></div>";
+          courses_days[i][j].Class +
+          "</span></div>";
+        t = new_courses_days[i][j].Time.split(" ");
       }
       xs += "</div>";
-      xs2 += "</div>";
     }
   }
   xs += "</div>";
-  xs2 += "</div>";
   xs +=
-    "<hr><div class='container'><div class='row'><p>مواعيد شهر رمضان</p></div></div>" +
-    xs2 +
-    "<style>.row{direction:rtl;text-align:center; height:35px; margin-bottom:1px;} .row > div{border: solid 0.5px #F7D; padding: 0px; border-radius:8px;} .row > div > span{display: inline-block;padding-top: 5px;line-height:17px;} #Program_Data  p{float:right; padding-left:5px;} .row > p{text-align:center; font-size:18px; width:100%;}</style>";
+    "<style>.row{direction:rtl;text-align:center; height:35px; margin-bottom:15px;} .row > div{border: solid 0.5px #F7D; padding: 0px; border-radius:8px;} .row > div > span{display: inline-block;padding-top: 5px;line-height:17px;} #Program_Data  p{float:right; padding-left:5px;} .row > p{text-align:center; font-size:18px; width:100%;} #Program_Data a:hover{color:blue;} .sps{cursor: no-drop;}</style>";
   xs +=
-    "<form id='Program_Data' class='form-control' style='display:none;position:fixed;top:10%;left:80%;width:19%;direction:rtl;'><button type='button' class='close' style='float:left;' aria-label='Close'><span aria-hidden='true'>&times;</span></button><br/><div id='class'></div><hr><div id='time'></div><hr><div id='tutor'></div><hr><div id='mail'></div><hr><div id='qty'></div></form>";
+    "<form id='Program_Data' class='form-control' style='display:none;position:fixed;top:10%;left:79.5%;width:20%;direction:rtl;'><button type='button' class='close' style='float:left;' aria-label='Close'><span aria-hidden='true'>&times;</span></button><br/><div id='class'></div><hr><div id='time'></div><hr><div id='time-ram'></div><hr><div id='tutor'></div><hr><div id='mail'></div><hr><div id='qty'></div></form>";
   document.getElementById("Course_Section").innerHTML = xs;
   $("#TableResult").css("direction", "rtl");
   $("#TableResult").css("width", "100%");
@@ -438,8 +405,17 @@
     function () {
       $("#class").html("<p>الصف: </p>" + $(this).attr("data-class"));
       $("#time").html("<p>التوقيت: </p>" + $(this).attr("data-time"));
+      $("#time-ram").html(
+        "<p>توقيت شهر رمضان: </p>" + $(this).attr("data-time-ram")
+      );
       $("#tutor").html("<p>المدرس: </p>" + $(this).attr("data-tutor"));
-      $("#mail").html("<p>البريد الإلكتروني: </p><a href='mailto:" + $(this).attr("data-mail") + "'>" + $(this).attr("data-mail") + "</a>");
+      $("#mail").html(
+        "<p>البريد الإلكتروني: </p><a href='mailto:" +
+          $(this).attr("data-mail") +
+          "'>" +
+          $(this).attr("data-mail") +
+          "</a>"
+      );
       $("#qty").html("<p>نسبة التدريس: </p>" + $(this).attr("data-qty"));
       $("#Program_Data").show();
     },
@@ -448,9 +424,22 @@
   $(".close").click(function () {
     $("#Program_Data").hide();
   });
+  $(".row .sps").click(function () {
+    var len = $(this).siblings().length - 1;
+    if(len == 0) {
+      $(this).parent().remove();
+      return;
+    }
+    $(this)
+      .siblings()
+      .not(".retype")
+      .css("flex", "0 0 " + (100 / 12) * parseFloat(10 / len) + "%");
+    $(this)
+      .siblings()
+      .not(".retype")
+      .css("max-width", (100 / 12) * parseFloat(10 / len) + "%");
+    $(this).remove();
+  });
   left_panel.style.display = "none";
   left_panel_hide.style.display = "";
-  setTimeout(function () {
-    window.location.href = "#Course_Section";
-  }, 2000);
 })();
