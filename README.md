@@ -1,0 +1,1 @@
+Script that scrapping Syrian Virtual University pages, then calculate student average, and another values like year, graduate, and more. Get student courses time and arrange them and show them by simple UI
